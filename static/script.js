@@ -1,81 +1,12 @@
 // Global variables and configuration
 let TRM_RATE = 4076.32; // COP per USD - will be updated from API
-let transactions = [];
+let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let currentChart = null;
 let trendsChart = null;
 let comparisonChart = null;
 let exchangeRateCache = {};
 let isLoadingExchangeRate = false;
 let conversionTimeout = null;
-
-// Authentication state
-let userSession = window.userSession || { isAuthenticated: false };
-
-// API Functions for authenticated requests
-async function loadTransactions() {
-    try {
-        const response = await fetch('/api/transactions');
-        if (response.ok) {
-            transactions = await response.json();
-            updateDashboard();
-            updateCategoryFilters();
-            updateTransactionHistory();
-            updateReports();
-        } else {
-            console.error('Failed to load transactions');
-        }
-    } catch (error) {
-        console.error('Error loading transactions:', error);
-    }
-}
-
-async function saveTransaction(transaction) {
-    try {
-        const response = await fetch('/api/transactions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(transaction)
-        });
-        
-        const result = await response.json();
-        if (result.success) {
-            showNotification(result.message, 'success');
-            await loadTransactions(); // Reload to get updated data
-            return true;
-        } else {
-            showNotification(result.message, 'error');
-            return false;
-        }
-    } catch (error) {
-        console.error('Error saving transaction:', error);
-        showNotification('Error al guardar la transacción', 'error');
-        return false;
-    }
-}
-
-async function deleteTransactionFromServer(id) {
-    try {
-        const response = await fetch(`/api/transactions/${id}`, {
-            method: 'DELETE'
-        });
-        
-        const result = await response.json();
-        if (result.success) {
-            showNotification(result.message, 'success');
-            await loadTransactions(); // Reload to get updated data
-            return true;
-        } else {
-            showNotification(result.message, 'error');
-            return false;
-        }
-    } catch (error) {
-        console.error('Error deleting transaction:', error);
-        showNotification('Error al eliminar la transacción', 'error');
-        return false;
-    }
-}
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
@@ -86,17 +17,8 @@ function initializeApp() {
     // Set current date for form inputs
     setCurrentDate();
     
-    // Check if user is authenticated and load accordingly
-    if (userSession.isAuthenticated) {
-        loadTransactions();
-    } else {
-        // Load from localStorage for non-authenticated users
-        transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-        updateDashboard();
-        updateCategoryFilters();
-        updateTransactionHistory();
-        updateReports();
-    }
+    // Migrate existing transactions to include exchange rate
+    migrateExistingTransactions();
     
     // Initialize TRM rate
     initializeTRM();
@@ -104,11 +26,23 @@ function initializeApp() {
     // Initialize event listeners
     setupEventListeners();
     
+    // Update dashboard
+    updateDashboard();
+    
     // Initialize charts
     initializeCharts();
     
     // Setup form conversions
     setupFormConversions();
+    
+    // Update category filters
+    updateCategoryFilters();
+    
+    // Update transaction history
+    updateTransactionHistory();
+    
+    // Update reports
+    updateReports();
 }
 
 function setCurrentDate() {
@@ -330,28 +264,16 @@ async function handleIncomeSubmit(e) {
             usdAmount: currency === 'USD' ? amount : amount / exchangeRate
         };
         
-        if (userSession.isAuthenticated) {
-            const apiTransaction = {
-                type: 'income',
-                amount: amount,
-                currency: currency,
-                category: 'Ingreso',
-                description: description,
-                date: date,
-                exchange_rate: exchangeRate
-            };
-            const success = await saveTransaction(apiTransaction);
-            if (!success) return;
-        } else {
-            transactions.push(transaction);
-            saveTransactions();
-            updateDashboard();
-        }
+        transactions.push(transaction);
+        saveTransactions();
         
         // Clear form
         document.getElementById('incomeForm').reset();
         setCurrentDate();
         updateIncomeConversion();
+        
+        // Update dashboard
+        updateDashboard();
         
         showNotification(`Ingreso registrado con TRM $${formatNumber(exchangeRate, 2)}`, 'success');
         
@@ -402,28 +324,16 @@ async function handleExpenseSubmit(e) {
             usdAmount: currency === 'USD' ? amount : amount / exchangeRate
         };
         
-        if (userSession.isAuthenticated) {
-            const apiTransaction = {
-                type: 'expense',
-                amount: amount,
-                currency: currency,
-                category: category,
-                description: description,
-                date: date,
-                exchange_rate: exchangeRate
-            };
-            const success = await saveTransaction(apiTransaction);
-            if (!success) return;
-        } else {
-            transactions.push(transaction);
-            saveTransactions();
-            updateDashboard();
-        }
+        transactions.push(transaction);
+        saveTransactions();
         
         // Clear form
         document.getElementById('expenseForm').reset();
         setCurrentDate();
         updateExpenseConversion();
+        
+        // Update dashboard
+        updateDashboard();
         
         showNotification(`Gasto registrado con TRM $${formatNumber(exchangeRate, 2)}`, 'success');
         
@@ -1089,21 +999,14 @@ function createTransactionHTML(transaction) {
     `;
 }
 
-async function deleteTransaction(id) {
+function deleteTransaction(id) {
     if (confirm('¿Estás seguro de que quieres eliminar esta transacción?')) {
-        if (userSession.isAuthenticated) {
-            const success = await deleteTransactionFromServer(id);
-            if (success) {
-                // Transaction list will be automatically reloaded by deleteTransactionFromServer
-            }
-        } else {
-            transactions = transactions.filter(t => t.id !== id);
-            saveTransactions();
-            updateDashboard();
-            updateTransactionHistory();
-            updateReports();
-            showNotification('Transacción eliminada', 'success');
-        }
+        transactions = transactions.filter(t => t.id !== id);
+        saveTransactions();
+        updateDashboard();
+        updateTransactionHistory();
+        updateReports();
+        showNotification('Transacción eliminada', 'success');
     }
 }
 
@@ -1508,13 +1411,7 @@ function updateComparisonChart() {
 
 // Utility functions
 function saveTransactions() {
-    if (userSession.isAuthenticated) {
-        // For authenticated users, data is saved via API
-        return;
-    } else {
-        // For non-authenticated users, save to localStorage
-        localStorage.setItem('transactions', JSON.stringify(transactions));
-    }
+    localStorage.setItem('transactions', JSON.stringify(transactions));
 }
 
 function formatNumber(number, decimals = 0) {

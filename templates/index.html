@@ -143,8 +143,8 @@
                                     <div class="form-group">
                                         <label for="incomeAmount">💵 Monto</label>
                                         <div class="currency-input-wrapper">
-                                            <input type="text" id="incomeAmount" required 
-                                                   placeholder="Ej: 1500000" class="form-control currency-input">
+                                            <input type="text" id="incomeAmount" required placeholder="Ej: 1500000"
+                                                class="form-control currency-input">
                                             <span class="currency-symbol" id="incomeAmountSymbol">COP $</span>
                                         </div>
                                     </div>
@@ -160,8 +160,8 @@
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="incomeDescription">📝 Descripción</label>
-                                        <input type="text" id="incomeDescription" required 
-                                               placeholder="Ej: Salario, Freelance, Venta" class="form-control">
+                                        <input type="text" id="incomeDescription" required
+                                            placeholder="Ej: Salario, Freelance, Venta" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label for="incomeDate">📅 Fecha</label>
@@ -195,8 +195,8 @@
                                     <div class="form-group">
                                         <label for="expenseAmount">💵 Monto</label>
                                         <div class="currency-input-wrapper">
-                                            <input type="text" id="expenseAmount" required 
-                                                   placeholder="Ej: 100000" class="form-control currency-input">
+                                            <input type="text" id="expenseAmount" required placeholder="Ej: 100000"
+                                                class="form-control currency-input">
                                             <span class="currency-symbol" id="expenseAmountSymbol">COP $</span>
                                         </div>
                                     </div>
@@ -235,8 +235,8 @@
 
                                 <div class="form-group full-width">
                                     <label for="expenseDescription">📝 Descripción</label>
-                                    <input type="text" id="expenseDescription" required 
-                                           placeholder="Ej: Almuerzo restaurante, Gasolina" class="form-control">
+                                    <input type="text" id="expenseDescription" required
+                                        placeholder="Ej: Almuerzo restaurante, Gasolina" class="form-control">
                                 </div>
 
                                 <div class="conversion-info">
@@ -363,16 +363,15 @@
     </nav>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    
     <script>
         // Register Service Worker for PWA
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
+            window.addEventListener('load', function () {
                 navigator.serviceWorker.register('/static/sw.js')
-                    .then(function(registration) {
+                    .then(function (registration) {
                         console.log('ServiceWorker registered: ', registration);
                     })
-                    .catch(function(registrationError) {
+                    .catch(function (registrationError) {
                         console.log('ServiceWorker registration failed: ', registrationError);
                     });
             });
@@ -383,7 +382,7 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            
+
             // Show install button
             const installBtn = document.createElement('button');
             installBtn.innerHTML = '<i class="bi bi-download"></i> Instalar App';
@@ -399,7 +398,7 @@
                     deferredPrompt = null;
                 });
             });
-            
+
             document.body.appendChild(installBtn);
         });
     </script>

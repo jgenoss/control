@@ -5,48 +5,6 @@
     box-sizing: border-box;
 }
 
-/* Authentication Header */
-.auth-header {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    padding: 8px 15px;
-    font-size: 14px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.user-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.user-name {
-    font-weight: 500;
-}
-
-.admin-link, .logout-link {
-    color: white;
-    text-decoration: none;
-    font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    background: rgba(255,255,255,0.2);
-    margin-left: 8px;
-    transition: background 0.3s;
-}
-
-.admin-link:hover, .logout-link:hover {
-    background: rgba(255,255,255,0.3);
-    color: white;
-}
-
 :root {
     --primary-color: #667eea;
     --secondary-color: #764ba2;
