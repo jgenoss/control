@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración - Panel Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            background: #f8f9fa;
+            min-height: 100vh;
+            padding-top: 2rem;
+        }
+        .sidebar .nav-link {
+            color: #6c757d;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background: #e9ecef;
+            color: #495057;
+        }
+        .setting-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .setting-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('main.dashboard') }}">
+                <i class="bi bi-shield-check me-2"></i>
+                Panel de Administración
+            </a>
+            
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle me-1"></i>
+                        {{ current_user.get_full_name() }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{{ url_for('main.dashboard') }}">
+                            <i class="bi bi-house me-2"></i>Dashboard Principal
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">
+                            <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar">
+                <div class="nav flex-column">
+                    <a class="nav-link" href="{{ url_for('admin.admin_dashboard') }}">
+                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin.users') }}">
+                        <i class="bi bi-people me-2"></i>Gestión de Usuarios
+                    </a>
+                    <a class="nav-link active" href="{{ url_for('admin.settings') }}">
+                        <i class="bi bi-gear me-2"></i>Configuración
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10">
+                <div class="container-fluid py-4">
+                    <!-- Header -->
+                    <div class="mb-4">
+                        <h2>
+                            <i class="bi bi-gear me-2"></i>
+                            Configuración del Sistema
+                        </h2>
+                        <p class="text-muted mb-0">Administra las configuraciones generales del sistema</p>
+                    </div>
+
+                    <!-- Settings Cards -->
+                    <div class="row g-4">
+                        <!-- System Information -->
+                        <div class="col-md-6">
+                            <div class="card setting-card">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="card-title mb-0">
+                                        <i class="bi bi-info-circle me-2"></i>
+                                        Información del Sistema
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-5">Versión:</dt>
+                                        <dd class="col-sm-7">v1.0.0</dd>
+                                        
+                                        <dt class="col-sm-5">Base de Datos:</dt>
+                                        <dd class="col-sm-7">PostgreSQL</dd>
+                                        
+                                        <dt class="col-sm-5">Framework:</dt>
+                                        <dd class="col-sm-7">Flask + Bootstrap</dd>
+                                        
+                                        <dt class="col-sm-5">PWA:</dt>
+                                        <dd class="col-sm-7">
+                                            <span class="badge bg-success">Habilitado</span>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Application Settings -->
+                        <div class="col-md-6">
+                            <div class="card setting-card">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="card-title mb-0">
+                                        <i class="bi bi-sliders me-2"></i>
+                                        Configuración de la Aplicación
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label class="form-label">Moneda por Defecto</label>
+                                            <select class="form-select">
+                                                <option value="COP" selected>Pesos Colombianos (COP)</option>
+                                                <option value="USD">Dólares Americanos (USD)</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="autoBackup" checked>
+                                                <label class="form-check-label" for="autoBackup">
+                                                    Respaldo Automático
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="bi bi-check2 me-2"></i>Guardar Cambios
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Exchange Rate Settings -->
+                        <div class="col-md-6">
+                            <div class="card setting-card">
+                                <div class="card-header bg-info text-white">
+                                    <h5 class="card-title mb-0">
+                                        <i class="bi bi-currency-exchange me-2"></i>
+                                        Configuración de Tasas de Cambio
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-muted">La aplicación utiliza la API de open.er-api.com para obtener tasas de cambio en tiempo real.</p>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Frecuencia de Actualización</label>
+                                        <select class="form-select">
+                                            <option value="daily" selected>Diaria</option>
+                                            <option value="hourly">Por Hora</option>
+                                            <option value="realtime">Tiempo Real</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">Última actualización: Hoy</small>
+                                        <button class="btn btn-outline-info btn-sm">
+                                            <i class="bi bi-arrow-clockwise me-1"></i>Actualizar Ahora
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Management Settings -->
+                        <div class="col-md-6">
+                            <div class="card setting-card">
+                                <div class="card-header bg-warning text-dark">
+                                    <h5 class="card-title mb-0">
+                                        <i class="bi bi-people me-2"></i>
+                                        Gestión de Usuarios
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="allowRegistration" checked>
+                                                <label class="form-check-label" for="allowRegistration">
+                                                    Permitir Registro de Nuevos Usuarios
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="emailVerification">
+                                                <label class="form-check-label" for="emailVerification">
+                                                    Requerir Verificación de Email
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">Longitud Mínima de Contraseña</label>
+                                            <select class="form-select">
+                                                <option value="6" selected>6 caracteres</option>
+                                                <option value="8">8 caracteres</option>
+                                                <option value="12">12 caracteres</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-warning">
+                                            <i class="bi bi-check2 me-2"></i>Aplicar Configuración
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Settings -->
+                        <div class="col-md-12">
+                            <div class="card setting-card">
+                                <div class="card-header bg-danger text-white">
+                                    <h5 class="card-title mb-0">
+                                        <i class="bi bi-shield-exclamation me-2"></i>
+                                        Configuración de Seguridad
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Configuración de Sesión</h6>
+                                            <form>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tiempo de Expiración de Sesión</label>
+                                                    <select class="form-select">
+                                                        <option value="30">30 minutos</option>
+                                                        <option value="60" selected>1 hora</option>
+                                                        <option value="120">2 horas</option>
+                                                        <option value="480">8 horas</option>
+                                                    </select>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" id="forceLogout">
+                                                        <label class="form-check-label" for="forceLogout">
+                                                            Cerrar Sesión Automáticamente
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <h6>Acciones de Emergencia</h6>
+                                            <div class="d-grid gap-2">
+                                                <button class="btn btn-outline-warning">
+                                                    <i class="bi bi-arrow-clockwise me-2"></i>
+                                                    Reiniciar Contraseña Admin
+                                                </button>
+                                                
+                                                <button class="btn btn-outline-danger">
+                                                    <i class="bi bi-person-x me-2"></i>
+                                                    Cerrar Todas las Sesiones
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
