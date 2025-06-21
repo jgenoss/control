@@ -20,13 +20,13 @@ Una aplicación web progresiva (PWA) desarrollada en Flask para gestionar finanz
 
 ## 🚀 Demo en Vivo
 
-[Ver Demo](https://tu-dominio.com) | [Instalar PWA](https://tu-dominio.com/#install)
+[Ver Demo](https://control-928u.onrender.com/)
 
 ## 📸 Capturas de Pantalla
 
 | Dashboard Principal | Registro de Transacciones | Reportes y Análisis |
 |---------------------|---------------------------|---------------------|
-| ![Dashboard](screenshots/dashboard.png) | ![Transactions](screenshots/transactions.png) | ![Reports](screenshots/reports.png) |
+| ![Dashboard](https://ibb.co/cSshgsPp) | ![Transactions](https://ibb.co/5ggPNgNC) | ![Reports](https://ibb.co/N2M8g5m9) |
 
 ## 🛠️ Tecnologías Utilizadas
 
