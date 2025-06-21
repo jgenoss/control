@@ -1,4 +1,4 @@
-# 💰 Control de Gastos Personales COP/USD
+![image](https://github.com/user-attachments/assets/49204ca7-db43-439f-9704-f0b32d8b8afc)# 💰 Control de Gastos Personales COP/USD
 
 Una aplicación web progresiva (PWA) desarrollada en Flask para gestionar finanzas personales entre Pesos Colombianos y Dólares Americanos con conversión automática de moneda y análisis de impacto del tipo de cambio.
 
@@ -26,7 +26,7 @@ Una aplicación web progresiva (PWA) desarrollada en Flask para gestionar finanz
 
 | Dashboard Principal | Registro de Transacciones | Reportes y Análisis |
 |---------------------|---------------------------|---------------------|
-| ![Dashboard](https://i.ibb.co/rRX27XgL/screencapture-control-928u-onrender-2025-06-21-11-22-36.jpg) | ![Transactions](https://ibb.co/5ggPNgNC) | ![Reports](https://ibb.co/N2M8g5m9) |
+| ![Dashboard](https://i.ibb.co/rRX27XgL/screencapture-control-928u-onrender-2025-06-21-11-22-36.jpg) | ![Transactions]([https://ibb.co/5ggPNgNC](https://i.ibb.co/mVV3LVLd/screencapture-control-928u-onrender-2025-06-21-11-24-06.jpg)) | ![Reports](https://ibb.co/N2M8g5m) |
 
 ## 🛠️ Tecnologías Utilizadas
 
