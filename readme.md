@@ -26,7 +26,7 @@ Una aplicación web progresiva (PWA) desarrollada en Flask para gestionar finanz
 
 | Dashboard Principal | Registro de Transacciones | Reportes y Análisis |
 |---------------------|---------------------------|---------------------|
-| ![Dashboard](https://ibb.co/cSshgsPp) | ![Transactions](https://ibb.co/5ggPNgNC) | ![Reports](https://ibb.co/N2M8g5m9) |
+| ![Dashboard](https://i.ibb.co/rRX27XgL/screencapture-control-928u-onrender-2025-06-21-11-22-36.jpg) | ![Transactions](https://ibb.co/5ggPNgNC) | ![Reports](https://ibb.co/N2M8g5m9) |
 
 ## 🛠️ Tecnologías Utilizadas
 
